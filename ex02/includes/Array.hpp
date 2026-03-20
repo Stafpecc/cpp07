@@ -1,63 +1,31 @@
 #ifndef ARRAY_HPP
 #define ARRAY_HPP
 
-#include <cstddef>
+#include <iostream>
 #include <exception>
 
 template <typename T>
 class Array
 {
-    private:
-        T* _data;
-        std::size_t _size;
+private:
+    T* _data;
+    unsigned int _size;
 
-    public:
-        Array() : _data(NULL), _size(0) {}
+public:
+    Array();
+    Array(unsigned int n);
+    Array(const Array& other);
 
-        Array(unsigned int n) : _data(new T[n]()), _size(n) {}
+    ~Array();
 
-        Array(const Array& other) : _data(new T[other._size]()), _size(other._size)
-        {
-            for (std::size_t i = 0; i < _size; i++)
-                _data[i] = other._data[i];
-        }
+    Array& operator=(const Array& other);
 
-        ~Array()
-        {
-            delete[] _data;
-        }
+    T& operator[](unsigned int index);
+    const T& operator[](unsigned int index) const;
 
-        Array& operator=(const Array& other)
-        {
-            if (this != &other)
-            {
-                delete[] _data;
-                _size = other._size;
-                _data = new T[_size]();
-                for (std::size_t i = 0; i < _size; i++)
-                    _data[i] = other._data[i];
-            }
-            return *this;
-        }
-
-        T& operator[](std::size_t index)
-        {
-            if (index >= _size)
-                throw std::out_of_range("Index out of bounds");
-            return _data[index];
-        }
-
-        const T& operator[](std::size_t index) const
-        {
-            if (index >= _size)
-                throw std::out_of_range("Index out of bounds");
-            return _data[index];
-        }
-
-        std::size_t size() const
-        {
-            return _size;
-        }
+    unsigned int size() const;
 };
+
+#include "Array.tpp"
 
 #endif
